@@ -1,0 +1,34 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Salesforce CLI
+        run: |
+          npm install sfdx-cli --global
+
+      - name: Authenticate with DevOrg
+        env:
+          SFDX_AUTH_URL: ${{ secrets.SFDX_AUTH_URL_DEV }}
+        run: |
+          echo $SFDX_AUTH_URL | sfdx auth:sfdxurl:store -f -
+
+      - name: Authenticate with ProdOrg
+        env:
+          SFDX_AUTH_URL: ${{ secrets.SFDX_AUTH_URL_PROD }}
+        run: |
+          echo $SFDX_AUTH_URL | sfdx auth:sfdxurl:store -f -
+
+      - name: Deploy to Production
+        run: |
+          sfdx force:source:deploy -p force-app -u ProdOrg -l RunLocalTests
