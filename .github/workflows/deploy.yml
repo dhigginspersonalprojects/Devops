@@ -28,6 +28,6 @@ jobs:
 
       - name: Deploy to Production Org
         if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
-        run: |
+        run: | 
           # Deploy to production only when PR is merged
           sfdx force:source:deploy -p force-app -u PERSONALPROJECTSAPPEXCHANGEPROD
