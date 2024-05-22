@@ -14,10 +14,9 @@ jobs:
 
       - name: Install Salesforce CLI
         run: |
-          wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
-          mkdir sfdx-cli
-          tar xJf sfdx-linux-amd64.tar.xz -C sfdx-cli --strip-components 1
-          sudo ./sfdx-cli/install
+          npm install sfdx-cli
+          node_modules/sfdx-cli/bin/run --version
+          node_modules/sfdx-cli/bin/run plugins --core
 
       - name: Authenticate to Production Org
         run: sfdx force:auth:web:login -a PERSONALPROJECTSAPPEXCHANGEPROD
