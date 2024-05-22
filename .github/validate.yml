@@ -21,7 +21,7 @@ jobs:
           SFDX_AUTH_URL: ${{ secrets.SFDX_AUTH_URL_PROD }}
         run: |
           echo $SFDX_AUTH_URL > sfdx-auth-url.txt
-          sfdx auth:sfdxurl:store -f sfdx-auth-url.txt -a PRODOrg
+          sfdx auth:sfdxurl:store -f sfdx-auth-url.txt -a PERSONALPROJECTSAPPEXCHANGEPROD
 
       - name: Validate against PRODOrg
-        run: sfdx force:source:deploy -p force-app -u PRODOrg -l RunLocalTests
+        run: sfdx force:source:deploy -p force-app -u PERSONALPROJECTSAPPEXCHANGEPROD -l RunLocalTests
