@@ -19,14 +19,7 @@ jobs:
           node_modules/sfdx-cli/bin/run plugins --core
 
       - name: Authenticate to Production Org
-        env:
-          SF_CONSUMER_KEY: ${{ secrets.SALESFORCE_CONSUMER_KEY }}
-          SF_CONSUMER_SECRET: ${{ secrets.SALESFORCE_CONSUMER_SECRET }}
-          SF_USERNAME: ${{ secrets.SALESFORCE_USERNAME }}
-          SF_PASSWORD_TOKEN: ${{ secrets.SALESFORCE_PASSWORD_TOKEN }}
-        run: sfdx force:auth:jwt:grant --clientid=$SF_CONSUMER_KEY --jwtkeyfile=$SALESFORCE_JWT_SECRET_KEY --username=diarmuid.higgins1992@gmail.com.privateappexchangeprojectsprod --setdefaultdevhubusername --setalias PERSONALPROJECTSAPPEXCHANGEPROD
-
-
+        run: sfdx force:auth:jwt:grant --clientid=3MVG9YFqzc_KnL.wy27qddHiZxqYjPBGrIihfnbuTNYTLyoJYG3Rw6O7sks48tuWPhIdPqcUExfrYV9U7vWJ3 --jwtkeyfile=C:/Users/dhiggi02/.ssh/jwt/server.key --username=diarmuid.higgins1992@gmail.com.privateappexchangeprojectsprod --setdefaultusername --setalias PERSONALPROJECTSAPPEXCHANGEPROD 
       - name: Validate against Production Org
         run: |
           # Run validation commands here, for example:
