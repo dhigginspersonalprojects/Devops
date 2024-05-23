@@ -24,7 +24,7 @@ jobs:
           SF_CONSUMER_SECRET: ${{ secrets.SALESFORCE_CONSUMER_SECRET }}
           SF_USERNAME: ${{ secrets.SALESFORCE_USERNAME }}
           SF_PASSWORD_TOKEN: ${{ secrets.SALESFORCE_PASSWORD_TOKEN }}
-        run: sfdx force:auth:jwt:grant --clientid=$SF_CONSUMER_KEY --jwtkeyfile=C:/Users/dhiggi02/.ssh/jwt/server.key --username=diarmuid.higgins1992@gmail.com.privateappexchangeprojectsprod --setdefaultdevhubusername --setalias PERSONALPROJECTSAPPEXCHANGEPROD
+        run: sfdx force:auth:jwt:grant --clientid=$SF_CONSUMER_KEY --jwtkeyfile=$SALESFORCE_JWT_SECRET_KEY --username=diarmuid.higgins1992@gmail.com.privateappexchangeprojectsprod --setdefaultdevhubusername --setalias PERSONALPROJECTSAPPEXCHANGEPROD
 
 
       - name: Validate against Production Org
