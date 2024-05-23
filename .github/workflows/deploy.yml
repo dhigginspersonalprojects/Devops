@@ -1,32 +1,13 @@
-name: Salesforce Deployment Pipeline
-
-on:
-  pull_request:
-    branches:
-      - main
-
+name: SFDX-CLI Deploy from Repository
+on: [push]
 jobs:
-  validate_and_deploy:
+  SFDX-CLI-Deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Install Salesforce CLI         
-        run: |
-          npm install sfdx-cli
-          node_modules/sfdx-cli/bin/run --version
-          node_modules/sfdx-cli/bin/run plugins --core
-
-      - name: Authenticate to Production Org
-        run: sfdx force:auth:jwt:grant --clientid=3MVG9YFqzc_KnL.wy27qddHiZxqYjPBGrIihfnbuTNYTLyoJYG3Rw6O7sks48tuWPhIdPqcUExfrYV9U7vWJ3 --jwtkeyfile=C:/Users/dhiggi02/.ssh/jwt/server.key --username=diarmuid.higgins1992@gmail.com.privateappexchangeprojectsprod --setdefaultusername --setalias PERSONALPROJECTSAPPEXCHANGEPROD 
-      - name: Validate against Production Org
-        run: |
-          # Run validation commands here, for example:
-          sfdx force:source:deploy -p force-app -l RunLocalTests -u PERSONALPROJECTSAPPEXCHANGEPROD
-
-      - name: Deploy to Production Org
-        if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
-        run: |
-          # Deploy to production only when PR is merged 
-          sfdx force:source:deploy -p force-app -u PERSONALPROJECTSAPPEXCHANGEPROD
+      - run: echo "🐧 GitHub Action running on ${{ runner.os }}"
+      - run: echo "🔎 Retrieving ${{ github.ref }} from ${{ github.repository }}."
+      - uses: actions/checkout@v2
+      - run: npm install sfdx-cli -g
+      - run: echo "${{ secrets.SALESFORCE_JWT_SECRET_KEY }}" > server.key
+      - run: sfdx force:auth:jwt:grant --clientid=${{ secrets.SALESFORCE_CONSUMER_KEY }} --jwtkeyfile=server.key --username=${{ secrets.SALESFORCE_USERNAME }} --setdefaultusername
+      - run: sfdx force:source:deploy --manifest=manifest/package.xml --testlevel=RunLocalTests -u ${{ secrets.SALESFORCE_USERNAME }}
