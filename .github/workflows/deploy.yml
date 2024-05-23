@@ -24,10 +24,8 @@ jobs:
           SF_CONSUMER_SECRET: ${{ secrets.SALESFORCE_CONSUMER_SECRET }}
           SF_USERNAME: ${{ secrets.SALESFORCE_USERNAME }}
           SF_PASSWORD_TOKEN: ${{ secrets.SALESFORCE_PASSWORD_TOKEN }}
-        run: |
-         echo "Authenticating to Salesforce..."
-         auth_url=$(sfdx force:auth:web:login --setalias PERSONALPROJECTSAPPEXCHANGEPROD --instanceurl https://merkle206-dev-ed.develop.lightning.force.com --setdefaultusername --json | grep '"sfdxAuthUrl":' | awk -F'"' '{print $4}')
-         sfdx auth:sfdxurl:store -f $auth_url --setalias PERSONALPROJECTSAPPEXCHANGEPROD
+        run: sfdx force:auth:jwt:grant --clientid=$SF_CONSUMER_KEY --jwtkeyfile=C:/Users/dhiggi02/.ssh/jwt/server.key --username=diarmuid.higgins1992@gmail.com.privateappexchangeprojectsprod --setdefaultdevhubusername --setalias PERSONALPROJECTSAPPEXCHANGEPROD
+
 
       - name: Validate against Production Org
         run: |
