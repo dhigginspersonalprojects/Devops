@@ -12,14 +12,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Install Salesforce CLI
+      - name: Install Salesforce CLI         
         run: |
           npm install sfdx-cli
           node_modules/sfdx-cli/bin/run --version
           node_modules/sfdx-cli/bin/run plugins --core
 
       - name: Authenticate to Production Org
-        run: sfdx force:auth:web:login -a PERSONALPROJECTSAPPEXCHANGEPROD
+        env:
+          SF_CONSUMER_KEY: ${{ secrets.SALESFORCE_CONSUMER_KEY }}
+          SF_CONSUMER_SECRET: ${{ secrets.SALESFORCE_CONSUMER_SECRET }}
+          SF_USERNAME: ${{ secrets.SALESFORCE_USERNAME }}
+          SF_PASSWORD_TOKEN: ${{ secrets.SALESFORCE_PASSWORD_TOKEN }}
+        run: sfdx force:auth:password:grant --clientid $SF_CONSUMER_KEY --clientsecret $SF_CONSUMER_SECRET --username $SF_USERNAME --password $SF_PASSWORD_TOKEN --instanceurl https://merkle206-dev-ed.develop.lightning.force.com --setalias PERSONALPROJECTSAPPEXCHANGEPROD --setdefaultusername
+
 
       - name: Validate against Production Org
         run: |
