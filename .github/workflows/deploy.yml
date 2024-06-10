@@ -1,44 +1,13 @@
-name: PR Checks
-run-name: Checks running whenever new PR is created
-on: 
-  pull_request:
-    branches:
-      - main
-
+name: SFDX-CLI Deploy from Repository
+on: [push]
 jobs:
-  build:
+  SFDX-CLI-Deploy:
     runs-on: ubuntu-latest
     steps:
-      # Checkout the Source code from the latest commit
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      # We need to install NPM so that we can install SFDX CLI tools
-      - name: Install NPM
-        run: |
-          npm install  
-      # Isntalling SFDX CLI
-      - name: Install the SFDX CLI
-        run: |
-          npm install @salesforce/cli --global  
-      # We need to use a key value stored as GitHub secret and 
-      # create a .key file since 'sf org login jwt' command expects a path 
-      # to .key file as a parameter
-      - name: Create server key file
-        run: |
-          touch server.key
-          echo -e "${{ secrets.SF_CICD_SERVERKEY }}" >> server.key  
-      # Authorization with Org. Notice that all critical values are
-      # used from the GitHub secrets storage and aren't public
-      - name: Authorize Org
-        run: sf org login jwt --json --alias PERSONALPROJECTSAPPEXCHANGEPROD 
-                --set-default --set-default-dev-hub 
-                --username "${{ secrets.SF_CICD_USERNAME }}" 
-                --keyfile /home/runner/work/game-force/game-force/server.key 
-                --clientid ${{ secrets.SF_CLIENT_SECRET }}
-      # Pushing sourche to Scratch org
-      - name: Push source to Scratch Org
-        run: sf project deploy start
-      # Running tests to make sure nothing is broken 
-      - name: Run unit tests
-        run: sf apex run test --wait 30 --test-level RunAllTestsInOrg --code-coverage
+      - run: echo "🐧 GitHub Action running on ${{ runner.os }}"
+      - run: echo "🔎 Retrieving ${{ github.ref }} from ${{ github.repository }}."
+      - uses: actions/checkout@v2
+      - run: npm install sfdx-cli -g
+      - run: echo "${{ secrets.SF_CICD_SERVERKEY }}" > server.key
+      - run: sfdx force:auth:jwt:grant --clientid=${{ secrets.SALESFORCE_CONSUMER_KEY }} --jwtkeyfile=server.key --username=${{ secrets.SF_CICD_USERNAME }} --setdefaultdevhubusername
+      - run: sfdx force:source:deploy --manifest=manifest/package.xml --testlevel=RunLocalTests -u ${{ secrets.SF_CICD_USERNAME }}
