@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <brand>
+        <headerColor>#0070D2</headerColor>
+        <logo>Master_Golf_Photo</logo>
+        <logoVersion>1</logoVersion>
+        <shouldOverrideOrgTheme>true</shouldOverrideOrgTheme>
+    </brand>
+    <formFactors>Small</formFactors>
+    <formFactors>Large</formFactors>
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
+    <label>Master Golf</label>
+    <navType>Console</navType>
+    <tabs>Golf_User_Account__c</tabs>
+    <tabs>Membership_Course__c</tabs>
+    <uiType>Lightning</uiType>
+    <utilityBar>Master_Golf_UtilityBar</utilityBar>
+    <workspaceConfig>
+        <mappings>
+            <tab>Golf_User_Account__c</tab>
+        </mappings>
+        <mappings>
+            <tab>Membership_Course__c</tab>
+        </mappings>
+    </workspaceConfig>
+</CustomApplication>
