@@ -12,6 +12,10 @@ public class GolfRoundTriggerHandler {
         }
     }
 
+    public static void afterInsertHandler(List<Golf_Round__c> newRecords){
+        GolfScorecardClass.createGolfScorecardAfterRoundIsCreated(newRecords); 
+    }
+
     public static String getCourseName(Id courseId){
         return [SELECT Name FROM Membership_Course__c  WHERE Id = :courseId].Name !=null ? [SELECT Name FROM Membership_Course__c  WHERE Id = :courseId].Name : null ; 
     }
