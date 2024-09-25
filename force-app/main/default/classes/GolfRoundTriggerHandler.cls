@@ -12,6 +12,7 @@ public class GolfRoundTriggerHandler {
                 String courseName = getCourseName(gol.Course__c);  
                 gol.Name = courseName + ' ' + dateOfRound;
                 gol.Date__c = dateOfRound;
+                gol.status__c = 'In Progress'; 
             }
         }
     }
@@ -33,5 +34,9 @@ public class GolfRoundTriggerHandler {
 
     public static String getCourseName(Id courseId){
         return [SELECT Name FROM Membership_Course__c  WHERE Id = :courseId].Name !=null ? [SELECT Name FROM Membership_Course__c  WHERE Id = :courseId].Name : null ; 
+    }
+
+    public static void afterUpdateHandler(){
+        
     }
 }
