@@ -1,11 +1,12 @@
 public with sharing class GolfScorecardClass {
-    public static void createGolfScorecardAfterRoundIsCreatedForUnknownCourse(List<Golf_Round__c> newRecords){
+    public static void createGolfScorecardAfterRoundIsCreatedForUnknownCourse(List<Golf_Round__c> golfRoundRecords){
+        system.debug('golf round records passed through'+golfRoundRecords); 
         List<Golf_Round_Score__c> newGolfScoresToCreate = new List<Golf_Round_Score__c>(); 
         List<Golf_Scorecard__mdt> scorecards = Golf_Scorecard__mdt.getAll().values();
         String loggedInUser = returnGolfUserAccountForLoggedInUser(); 
         if(!scorecards.isEmpty()){
-            if(!newRecords.isEmpty()){
-                for(Golf_Round__c golfRound : newRecords ){
+            if(!golfRoundRecords.isEmpty()){
+                for(Golf_Round__c golfRound : golfRoundRecords ){
                     for(Golf_Scorecard__mdt scoreCardMtd : scorecards){
                         Golf_Round_Score__c score = new Golf_Round_Score__c();
                         score.Hole_Number__c =scoreCardMtd.Hole_Number__c; 
@@ -25,6 +26,7 @@ public with sharing class GolfScorecardClass {
     }
 
     public static void createGolfScorecardAfterRoundIsCreatedForKNOWNCourse(List<Golf_Round__c> golfRoundRecords){
+        system.debug('golf round records passed through'+golfRoundRecords); 
         List<Golf_Round_Score__c> newGolfScoresToCreate = new List<Golf_Round_Score__c>(); 
         List<Golf_Course_Hole__c> golfCourseHoles = new List<Golf_Course_Hole__c>();
         String loggedInUser = returnGolfUserAccountForLoggedInUser(); 

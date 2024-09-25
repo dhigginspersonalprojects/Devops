@@ -4,9 +4,13 @@ public with sharing class GolfCourseClass {
     public static List<Golf_Round__c> golfRoundsWhereCourseAREStoredOnDatabaseList = new List<Golf_Round__c>(); 
 
     public static List<Golf_Round__c> golfRoundsWhereCourseAreStoredOnDatabase(List<Golf_Round__c> golfRoundRecordsToCheck){
+        Set<Id> golfRoundIds = new Set<Id>(); 
+        for(Golf_Round__c triggerRecords : golfRoundRecordsToCheck){
+            golfRoundIds.add(triggerRecords.Id); 
+        }
         Set<Id> setOfGolfCoursesForRoundsThatAreStoredOnDatabase = golfCourseIdsForCoursesStoredOnDatabaseForRoundsCreated(golfRoundRecordsToCheck); 
         if(!setOfGolfCoursesForRoundsThatAreStoredOnDatabase.isEmpty()){
-            golfRoundsWhereCourseAREStoredOnDatabaseList = [SELECT Course__c FROM Golf_Round__c WHERE Course__c IN : setOfGolfCoursesForRoundsThatAreStoredOnDatabase ];     
+            golfRoundsWhereCourseAREStoredOnDatabaseList = [SELECT Course__c FROM Golf_Round__c WHERE Course__c IN : setOfGolfCoursesForRoundsThatAreStoredOnDatabase AND Id IN :golfRoundIds];     
         }
         if(!golfRoundsWhereCourseAREStoredOnDatabaseList.isEmpty()){
             return golfRoundsWhereCourseAREStoredOnDatabaseList; 
@@ -16,9 +20,13 @@ public with sharing class GolfCourseClass {
     }
 
     public static List<Golf_Round__c> golfRoundsWhereCourseAreNOTStoredOnDatabase(List<Golf_Round__c> golfRoundRecordsToCheck){
+        Set<Id> golfRoundIds = new Set<Id>(); 
+        for(Golf_Round__c triggerRecords : golfRoundRecordsToCheck){
+            golfRoundIds.add(triggerRecords.Id); 
+        }
         Set<Id> setOfGolfCoursesForRoundsThatAreNotStoredOnDatabase = golfCourseIdsForCoursesNOTStoredOnDatabaseForRoundsCreated(golfRoundRecordsToCheck); 
         if(!setOfGolfCoursesForRoundsThatAreNotStoredOnDatabase.isEmpty()){
-            golfRoundsWhereCourseARENOTStoredOnDatabaseList = [SELECT Course__c FROM Golf_Round__c WHERE Course__c  IN : setOfGolfCoursesForRoundsThatAreNotStoredOnDatabase ];     
+            golfRoundsWhereCourseARENOTStoredOnDatabaseList = [SELECT Course__c FROM Golf_Round__c WHERE Course__c  IN : setOfGolfCoursesForRoundsThatAreNotStoredOnDatabase AND Id IN :golfRoundIds ];     
         }
         if(!golfRoundsWhereCourseARENOTStoredOnDatabaseList.isEmpty()){
             return golfRoundsWhereCourseARENOTStoredOnDatabaseList; 
