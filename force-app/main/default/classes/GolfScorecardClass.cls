@@ -1,6 +1,5 @@
 public with sharing class GolfScorecardClass {
     public static void createGolfScorecardAfterRoundIsCreatedForUnknownCourse(List<Golf_Round__c> golfRoundRecords){
-        system.debug('golf round records passed through'+golfRoundRecords); 
         List<Golf_Round_Score__c> newGolfScoresToCreate = new List<Golf_Round_Score__c>(); 
         List<Golf_Scorecard__mdt> scorecards = Golf_Scorecard__mdt.getAll().values();
         String loggedInUser = returnGolfUserAccountForLoggedInUser(); 
@@ -12,6 +11,7 @@ public with sharing class GolfScorecardClass {
                         score.Hole_Number__c =scoreCardMtd.Hole_Number__c; 
                         score.Score__c = scoreCardMtd.Hole_Score__c;
                         score.Par_of_Hole__c = scoreCardMtd.Par_of_Hole__c; 
+                        score.Par_Of_Hole_Integer__c = Integer.valueOf(scoreCardMtd.Par_of_Hole__c); 
                         score.Golf_Round__c= golfRound.Id; 
                         score.Golf_User_Account__c = loggedInUser; 
                         score.Hole_Distance_Yards__c = 0; 
@@ -25,8 +25,7 @@ public with sharing class GolfScorecardClass {
         }
     }
 
-    public static void createGolfScorecardAfterRoundIsCreatedForKNOWNCourse(List<Golf_Round__c> golfRoundRecords){
-        system.debug('golf round records passed through'+golfRoundRecords); 
+    public static void createGolfScorecardAfterRoundIsCreatedForKNOWNCourse(List<Golf_Round__c> golfRoundRecords){ 
         List<Golf_Round_Score__c> newGolfScoresToCreate = new List<Golf_Round_Score__c>(); 
         List<Golf_Course_Hole__c> golfCourseHoles = new List<Golf_Course_Hole__c>();
         String loggedInUser = returnGolfUserAccountForLoggedInUser(); 
@@ -43,6 +42,7 @@ public with sharing class GolfScorecardClass {
                 score.Hole_Number__c =holes.Hole_Number__c; 
                 score.Score__c = '0';
                 score.Par_of_Hole__c = holes.Par_of_Hole__c; 
+                score.Par_Of_Hole_Integer__c = Integer.valueOf(holes.Par_of_Hole__c); 
                 score.Golf_Round__c= golfRoundRecs.Id; 
                 score.Golf_User_Account__c = loggedInUser; 
                 score.Hole_Distance_Yards__c = holes.Hole_Distance_Yards__c;
