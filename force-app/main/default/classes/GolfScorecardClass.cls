@@ -1,4 +1,7 @@
 public with sharing class GolfScorecardClass {
+    public static string objectName = 'Golf_Round_Score__c';
+    public static string fieldName = 'Score__c';
+    public static List<String> golfScoresPicklistValues = new List<String>(); 
     public static void createGolfScorecardAfterRoundIsCreatedForUnknownCourse(List<Golf_Round__c> golfRoundRecords){
         List<Golf_Round_Score__c> newGolfScoresToCreate = new List<Golf_Round_Score__c>(); 
         List<Golf_Scorecard__mdt> scorecards = Golf_Scorecard__mdt.getAll().values();
@@ -63,5 +66,22 @@ public with sharing class GolfScorecardClass {
         } else {
             return golfUserAccountId;
         }
+    }
+
+    @AuraEnabled
+    public static List<String> picklistValues(String objectName, String fieldName){
+        List<Schema.DescribeSobjectResult> results = Schema.describeSObjects(new List<String>{objectName});
+        if(!results.isEmpty()){
+            for(Schema.DescribeSobjectResult res : results) {
+                for (Schema.PicklistEntry entry : res.fields.getMap().get(fieldName).getDescribe().getPicklistValues()) {
+                    if (entry.isActive()) {
+                        golfScoresPicklistValues.add(entry.getValue());
+                    }
+                }
+            }  
+        } else {
+            golfScoresPicklistValues = null;
+        }
+        return golfScoresPicklistValues;        
     }
 }
